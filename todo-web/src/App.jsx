@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Center, Text, CheckboxGroup, Flex, Button } from "@chakra-ui/react";
+import { Box, Center, Text, CheckboxGroup, Flex, Button, Input } from "@chakra-ui/react";
 import { Task } from "./component/Task";
 
 export const App = () => {
@@ -13,6 +13,9 @@ export const App = () => {
       .then((res) => {
         console.log(res.data);
         setTasks(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -25,6 +28,9 @@ export const App = () => {
       .post("http://localhost:3010/tasks", {
         name: name,
         is_done: false,
+      })
+      .catch((err) => {
+        console.log(err);
       });
     setName("");
     fetch();
@@ -37,6 +43,12 @@ export const App = () => {
     setTasks(taskCopy);
   };
 
+  const destroyTask = async (id) => {
+    await axios
+      .delete(`http://localhost:3010/tasks/${id}`);
+    // fetch();
+  };
+
   return (
     <Box mt="64px">
       <Center>
@@ -47,7 +59,7 @@ export const App = () => {
             </Text>
           </Box>
           <Flex mb="24px">
-            <input
+            <Input
               placeholder="タスク名を入力"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -64,9 +76,11 @@ export const App = () => {
                 <Task
                   key={index}
                   index={index}
+                  id={task.id}
                   name={task.name}
                   isDone={task.isDone}
                   toggleIsDone={toggleIsDone}
+                  destroyTask={destroyTask}
                 />
               );
             })}
