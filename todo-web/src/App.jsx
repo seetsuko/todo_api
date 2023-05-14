@@ -42,11 +42,13 @@ export const App = () => {
     }
   };
 
-  const toggleIsDone = (index) => {
-    const taskCopy = [...tasks];
-    const isDone = taskCopy[index].isDone;
-    taskCopy[index].isDone = !isDone;
-    setTasks(taskCopy);
+  const toggleIsDone = async (id, index) => {
+    const isDone = tasks[index].is_done;
+    await axios
+      .put(`http://localhost:3010/tasks/${id}`, {
+        is_done: !isDone,
+      });
+    fetch();
   };
 
   const destroyTask = async (id) => {
@@ -85,7 +87,7 @@ export const App = () => {
                   index={index}
                   id={task.id}
                   name={task.name}
-                  isDone={task.isDone}
+                  isDone={task.is_done}
                   toggleIsDone={toggleIsDone}
                   destroyTask={destroyTask}
                 />

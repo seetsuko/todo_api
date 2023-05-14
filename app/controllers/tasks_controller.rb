@@ -15,9 +15,15 @@ class TasksController < ApplicationController
     head :no_content
   end
 
+  def update
+    task = Task.find(params[:id])
+    task.update(task_params)
+    head :ok
+  end
+
   private
 
   def task_params
-    params.permit(:name, :is_done)
+    params.require(:task).permit(:name, :is_done)
   end
 end

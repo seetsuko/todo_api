@@ -1,15 +1,15 @@
-import { Box, Checkbox, Text } from "@chakra-ui/react";
+import { Flex, Checkbox, Text } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 
 export const Task = (props) => {
   return (
-    <Box mb="16px">
+    <Flex mb="16px" justifyContent="space-between" alignItems="center">
       <Checkbox
-        size="lg"
-        colorScheme="blue"
         isChecked={props.isDone}
+        colorScheme="blue"
+        size="lg"
         onChange={() => {
-          props.toggleIsDone(props.index);
+          props.toggleIsDone(props.id, props.index);
         }}
       >
         <Text>{props.name}</Text>
@@ -18,6 +18,6 @@ export const Task = (props) => {
         props.destroyTask(props.id);
       }}
       />
-    </Box>
+    </Flex>
   );
 };
