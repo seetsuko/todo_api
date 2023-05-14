@@ -12,11 +12,11 @@ class TasksController < ApplicationController
   def destroy
     task = Task.find(params[:id])
     task.destroy
-    head :ok
+    head :no_content
   end
 
   private
-  
+
   def task_params
     params.permit(:name, :is_done)
   end

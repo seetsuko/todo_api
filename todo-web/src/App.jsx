@@ -6,6 +6,7 @@ import { Task } from "./component/Task";
 export const App = () => {
   const [tasks, setTasks] = useState([]);
   const [name, setName] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const fetch = async () => {
     axios
@@ -24,16 +25,21 @@ export const App = () => {
   }, []);
 
   const createTask = async () => {
-    await axios
-      .post("http://localhost:3010/tasks", {
-        name: name,
-        is_done: false,
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    setName("");
-    fetch();
+    if (name === "") {
+      setErrorMessage("入力してください");
+    } else {
+      await axios
+        .post("http://localhost:3010/tasks", {
+          name: name,
+          is_done: false,
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      setName("");
+      setErrorMessage("");
+      fetch();
+    }
   };
 
   const toggleIsDone = (index) => {
@@ -46,7 +52,7 @@ export const App = () => {
   const destroyTask = async (id) => {
     await axios
       .delete(`http://localhost:3010/tasks/${id}`);
-    // fetch();
+    fetch();
   };
 
   return (
@@ -69,6 +75,7 @@ export const App = () => {
                 タスクを作成
               </Button>
             </Box>
+            {errorMessage}
           </Flex>
           <CheckboxGroup>
             {tasks.map((task, index) => {
