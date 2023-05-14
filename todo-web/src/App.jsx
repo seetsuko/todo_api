@@ -75,8 +75,8 @@ export const App = () => {
                 タスクを作成
               </Button>
             </Box>
-            {errorMessage}
           </Flex>
+          {errorMessage}
           <CheckboxGroup>
             {tasks.map((task, index) => {
               return (
